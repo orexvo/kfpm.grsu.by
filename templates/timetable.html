@@ -1,0 +1,197 @@
+﻿<!DOCTYPE html>
+<html lang="ru"> 
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" content="">
+
+    <title>Расписание занятий | Кафедра фундаментальной и прикладной математики ФаМИ ГрГУ</title>
+    <link rel="shortcut icon" href="{{ url_for('static', filename='images/grsu-logo.png') }}" />
+    <!-- <link rel="stylesheet" href="{{ url_for('static', filename='css/slider-pro.min.css') }}" /> -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+    <link href="{{ url_for('static', filename='css/font-awesome.min.css') }}" rel="stylesheet" type="text/css">
+    <link href="http://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+
+
+<style>
+    table {
+        width: 100%;
+	border-collapse: separate;
+        border-spacing: 10px;
+        /*border-collapse: collapse;  Убирает отступы между ячейками */
+    }
+    
+    th, td {
+        padding: 0; /* Отступ внутри ячейки */
+	border-top: solid 3px #ccc;
+        /*border: 1px solid #ccc;  Граница ячейки */
+        max-width: 220px; /* Максимальная ширина ячейки */
+        word-wrap: break-word; /* Перенос длинных слов */
+        overflow-wrap: break-word; /* Совместимость с различными браузерами */
+    }
+
+    .responsive-image {
+	display: block;
+        max-width: 100%; /* Максимальная ширина 100% от родительского элемента */
+        max-height: 400px; /* Максимальная высота */
+        width: auto; /* Автоматическая ширина для сохранения пропорций */
+        height: auto; /* Автоматическая высота для сохранения пропорций */
+    }
+</style>
+
+<body>
+
+<div class="background"></div>
+<div class="content">
+
+<div class="container">
+	<div class="header">
+		<div class="row">
+			<div class="col-md-2">
+			<div class="logo" style="margin: 20px auto">
+				<a href="{{url_for('home') }}"><img src="{{ url_for('static', filename='images/grsu-logo.png') }}"></a>
+			</div>
+			</div>
+			<div class="col-md-10">
+				<div class="row">
+					<div class="col-md-7">
+						<h3>
+							Факультет математики и информатики<br><br>
+							Кафедра фундаментальной и прикладной математики
+						</h3>
+					</div>
+				<div class="col-md-4">
+					<ul class="nav navbar-nav navbar-right">
+						<!-- <li><a href="/login"><h5>Авторизация</h5></a></li> -->
+					</ul>
+				</div>
+				</div>
+			<div class="row">
+				<div class="menu">
+					<nav class="navbar" role="navigation"><!-- b -->
+	<ul class="nav navbar-nav">
+		<li><a href="/news">Новости</a></li>
+		<li class="dropdown">
+			<a href="#" data-toggle="dropdown" class="dropdown-toggle">О кафедре <b class="caret"></b></a>
+			<ul class="dropdown-menu">
+				<li><a href="/history">История</a></li>
+				<li><a href="/teachers">Сотрудники</a></li>
+				<li><a href="/branch">Филиал кафедры</a></li>
+				<li><a href="/lab">Учебная лаборатория</a></li>
+			</ul>
+		</li>
+		<li class="dropdown">
+			<a href="#" data-toggle="dropdown" class="dropdown-toggle">Научная деятельность <b class="caret"></b></a>
+			<ul class="dropdown-menu">
+				<li><a href="/filesofsci">Направления научной деятельности</a></li>
+				<li><a href="/aspiranture">Аспирантура</a></li>
+			</ul>
+		</li>
+		<li class="dropdown">
+			<a href="#" data-toggle="dropdown" class="dropdown-toggle">Учебная деятельность <b class="caret"></b></a>
+			<ul class="dropdown-menu">
+				<li><a href="/aboutspeciality">О специальности</a></li>
+				<li><a href="/magistracy">Магистратура</a></li>
+				<li><a href="/beststudents">Лучшие студенты</a></li>
+				<li><a href="/schedule">Расписание</a></li>
+			</ul>
+		</li>
+		<li><a href="/forenrollees">Абитуриенту</a></li>
+	</ul> 
+</nav> 
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+    <h1>Расписание занятий</h1>
+    <form method="GET" action="/schedule">
+        <label for="course">Курс:</label>
+        <select name="course" id="course">
+            {% for course in courses %}
+                <option value="{{ course.id }}">{{ course.name }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="group">Группа:</label>
+        <select name="group" id="group">
+            {% for group in groups %}
+                <option value="{{ group.id }}">{{ group.name }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="week_start">Учебная неделя:</label>
+        <input type="date" name="week_start" id="week_start" required>
+
+        <button type="submit">Показать расписание</button>
+    </form>
+
+    {% if schedule %}
+        <table>
+    <tbody>
+        <tr>
+		<td><strong>Время</strong></td>
+		<td><strong>Курс</strong></td>
+		<td><strong>Группа</strong></td>
+		<td><strong>Преподаватель</strong></td>
+	</tr>
+	<tr>
+            {% for item in schedule %}
+                <td>{{ item.lesson_time }}</td>
+		<td>{{ item.course.name }}</td>
+		<td>{{ item.group.name }}</td>
+		<td>{{ item.lecturer.full_name }}</td>
+            {% endfor %}
+        </tr>
+    </tbody>
+</table>
+    {% endif %}
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+
+<style>
+    div.footer {
+      border-top: solid 3px #ccc;
+    }
+</style>
+	<div class="footer">
+			<div class="row">
+				<div class="col-md-8">
+					<p>
+						© 2024 <br />
+						УО "Гродненский Государственный Университет им. Я. Купалы"<br />
+						Факультет математики и информатики <br />
+						Кафедра фундаментальной и прикладной математики <br />
+					</p>
+				</div>
+				<div class="col-md-4 text-right">
+					<p>
+						Республика Беларусь
+						<br />г. Гродно, 230023<br />
+						ул. Ожешко, 22, к. 314<br />
+						 +375 (152) 39-53-14 <br />
+						 <a href="">kaf_teorfun@grsu.by</a> <br />	
+					</p>
+				</div>
+			</div>
+		</div>
+
+	</div>
+
+    <!-- jQuery Version 1.11.0 -->
+    <!-- <script src="js/jquery-1.11.0.js"></script> -->
+    <script src="{{ url_for('static', filename='js/jquery-1.11.0.js') }}"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <!-- <script src="js/bootstrap.min.js"></script> -->
+    <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+</div>
+
+</body>
+
+</html>

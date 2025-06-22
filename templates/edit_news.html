@@ -1,0 +1,35 @@
+﻿<!DOCTYPE html> 
+<meta charset="utf-8">
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/forlog.css') }}">
+
+<body>
+<div class="background"></div>
+<div class="content">
+
+<h1>Редактировать новость</h1>
+
+<form method="POST" enctype="multipart/form-data">
+    <div>
+        <label for="id">Id:</label>
+        <input type="text" id="id" name="id" value="{{ news.id }}" readonly>
+    </div>
+    <div>
+        <label for="title">Заголовок:</label>
+        <input type="text" id="title" name="title" value="{{ news.title }}" required>
+    </div>
+    <div>
+        <label for="data">Дата:</label>
+        <input type="text" id="data" name="data" value="{{ news.data }}" required>
+    </div>
+    <div>
+        <label for="description">Описание:</label>
+        <input type="text" id="description" name="description" value="{{ news.description }}" required>
+    </div>
+    <button type="submit">Сохранить</button>
+</form>
+
+<ul><a href="{{ url_for('admin') }}">Назад</a></ul>
+</div>
+</body>
+
+</html>
